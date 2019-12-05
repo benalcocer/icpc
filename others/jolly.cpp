@@ -1,6 +1,6 @@
 /// @author Benjamin Alcocer
 /// @file latinsquares.cpp
-/// @version 2019-09-07
+/// @version 2019-09-08
 /// @brief Jolly Jumpers for UNLV ACM practice...
 
 #include <iostream>
