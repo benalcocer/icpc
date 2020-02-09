@@ -9,13 +9,24 @@ def display(count, length):
     else:
         print(">500")
 
+def isPalindrome(arr1):
+    # Reverse
+    arr2 = []
+    for element in arr1:
+        arr2.insert(0, element)
+    # Check original with reverse
+    for i in range(len(arr1)):
+        if arr1[i] != arr2[i]:
+            return False
+    return True
+
 for line in sys.stdin:
     line = line.replace('\n','')  # remove end-of-line present in strings read from input
     array = line.split()
     if len(array) != 2:
         break
 
-    palin = []
+    result = []
     forward = []
     backward = []
 
@@ -38,15 +49,17 @@ for line in sys.stdin:
         else:
             base = int(array[0])
             while True:
+                if count > 500:
+                    break
                 # Put previous result in Forward list, and build backward list
                 # Else convert into correct base
-                if len(palin) != 0:
+                if len(result) != 0:
                     forward.clear()
                     backward.clear()
-                    for element in palin:
+                    for element in result:
                         forward.insert(0, element)
                         backward.append(element)
-                    palin.clear()
+                    result.clear()
                 else:
                     backward.append(orig % base)
                     forward.append(orig % base)
@@ -58,38 +71,23 @@ for line in sys.stdin:
                 
                 # Do bases other than 10 arithmetic
                 i = len(forward) - 1
-                result = 0
+                partialResult = 0
                 carry = 0
                 while i >= 0:
-                    result = forward[i] + backward[i] + carry - base
-                    if result >= 0:
-                        palin.insert(0, result)
+                    partialResult = forward[i] + backward[i] + carry - base
+                    if partialResult >= 0:
+                        result.insert(0, partialResult)
                         carry = 1
                     else:
-                        palin.insert(0, result + base)
+                        result.insert(0, partialResult + base)
                         carry = 0
                     i -= 1
                 if carry != 0:
-                    palin.insert(0, 1)
-                
-                # Reverse Potential Palindrome
-                arr = []
-                for x in palin:
-                    arr.append(x)
-                
-                # Check if Palindrome
-                isPalin = True
-                k = len(palin) - 1
-                digits = k
-                for j in range(len(arr)):
-                    if arr[j] != palin[k]:
-                        isPalin = False
-                        break
-                    k -= 1
+                    result.insert(0, 1)
 
-                # Exit if palindrome or count > 500
+                # Check if Palindrome
                 count += 1
-                if isPalin or count > 500:
+                if isPalindrome(result):
                     break
-            display(count, len(palin))
+            display(count, len(result))
 sys.exit()
